@@ -1,0 +1,70 @@
+!_TAG_FILE_FORMAT	2	/extended format; --format=1 will not append ;" to lines/
+!_TAG_FILE_SORTED	1	/0=unsorted, 1=sorted, 2=foldcase/
+!_TAG_PROGRAM_AUTHOR	Darren Hiebert	/dhiebert@users.sourceforge.net/
+!_TAG_PROGRAM_NAME	Exuberant Ctags	//
+!_TAG_PROGRAM_URL	http://ctags.sourceforge.net	/official site/
+!_TAG_PROGRAM_VERSION	5.8	//
+CHANNEL_H_	include/Channel.h	9;"	d
+Channel	include/Channel.h	/^	Channel(){$/;"	f	class:netlib::net::Channel
+Channel	include/Channel.h	/^class Channel : boost::noncopyable {$/;"	c	namespace:netlib::net
+EPOLLPOLLER_H_	include/EpollPoller.h	9;"	d
+EVENTLOOP_H_	include/EventLoop.h	9;"	d
+EpollPoller	include/EpollPoller.h	/^class EpollPoller : public Poller{$/;"	c	namespace:netlib::net
+EpollPoller	src/EpollPoller.cpp	/^EpollPoller::EpollPoller() : epollfd_(::epoll_create(MAXEPOLLSIZE)){$/;"	f	class:netlib::net::EpollPoller
+EventCallBack	include/Channel.h	/^	typedef boost::function<void()> EventCallBack;$/;"	t	class:netlib::net::Channel
+EventList	include/EpollPoller.h	/^	typedef std::vector<struct epoll_event>  EventList;$/;"	t	class:netlib::net::EpollPoller
+EventLoop	include/EventLoop.h	/^class EventLoop : boost::noncopyable{$/;"	c	namespace:netlib::net
+EventLoop	src/EventLoop.cpp	/^EventLoop::EventLoop() : pollerPtr_(new EpollPoller){$/;"	f	class:netlib::net::EventLoop
+MAXEPOLLSIZE	include/EpollPoller.h	16;"	d
+POLLER_H_	include/Poller.h	9;"	d
+Poller	include/Poller.h	/^class Poller : boost::noncopyable {$/;"	c	namespace:netlib::net
+SOCKETSACT_H_	include/SocketsAct.h	9;"	d
+SOCKET_H_	include/Socket.h	9;"	d
+SOCKOPTS	include/SocketsAct.h	/^} SOCKOPTS;$/;"	t	namespace:netlib::net::sockets	typeref:enum:netlib::net::sockets::sockopts
+Socket	include/Socket.h	/^class Socket : boost::noncopyable{$/;"	c	namespace:netlib::net
+TCPSERVER_H_	include/TcpServer.h	9;"	d
+accept	src/SocketsAct.cpp	/^int sockets::accept(int sockfd, struct sockaddr_in& addr){$/;"	f	class:netlib::net::sockets
+bind	src/SocketsAct.cpp	/^void sockets::bind(int sockfd, const struct sockaddr_in& addr){$/;"	f	class:netlib::net::sockets
+connect	src/SocketsAct.cpp	/^int sockets::connect(int sockfd, const struct sockaddr_in& addr){$/;"	f	class:netlib::net::sockets
+createSockfd	src/SocketsAct.cpp	/^int sockets::createSockfd(SOCKOPTS flag){$/;"	f	class:netlib::net::sockets
+epollfd_	include/EpollPoller.h	/^	int epollfd_;$/;"	m	class:netlib::net::EpollPoller
+events_	include/EpollPoller.h	/^	EventList events_;$/;"	m	class:netlib::net::EpollPoller
+kPollTimeMs	src/EventLoop.cpp	/^const int kPollTimeMs = 10000;$/;"	v
+listen	src/SocketsAct.cpp	/^void sockets::listen(int sockfd){$/;"	f	class:netlib::net::sockets
+loop	src/EventLoop.cpp	/^void EventLoop::loop(){$/;"	f	class:netlib::net::EventLoop
+net	include/Channel.h	/^namespace net{$/;"	n	namespace:netlib
+net	include/EpollPoller.h	/^namespace net{$/;"	n	namespace:netlib
+net	include/EventLoop.h	/^namespace net{$/;"	n	namespace:netlib
+net	include/Poller.h	/^namespace net{$/;"	n	namespace:netlib
+net	include/Socket.h	/^namespace net{$/;"	n	namespace:netlib
+net	include/SocketsAct.h	/^namespace net{$/;"	n	namespace:netlib
+net	src/EpollPoller.cpp	/^namespace net{$/;"	n	namespace:netlib	file:
+net	src/EventLoop.cpp	/^namespace net{$/;"	n	namespace:netlib	file:
+net	src/SocketsAct.cpp	/^namespace net{$/;"	n	namespace:netlib	file:
+netlib	include/Channel.h	/^namespace netlib{$/;"	n
+netlib	include/EpollPoller.h	/^namespace netlib{$/;"	n
+netlib	include/EventLoop.h	/^namespace netlib{$/;"	n
+netlib	include/Poller.h	/^namespace netlib{$/;"	n
+netlib	include/Socket.h	/^namespace netlib{$/;"	n
+netlib	include/SocketsAct.h	/^namespace netlib{$/;"	n
+netlib	src/EpollPoller.cpp	/^namespace netlib{$/;"	n	file:
+netlib	src/EventLoop.cpp	/^namespace netlib{$/;"	n	file:
+netlib	src/SocketsAct.cpp	/^namespace netlib{$/;"	n	file:
+poll	src/EpollPoller.cpp	/^void EpollPoller::poll(int timeoutMs){$/;"	f	class:netlib::net::EpollPoller
+pollerPtr_	include/EventLoop.h	/^	boost::scoped_ptr<Poller> pollerPtr_;$/;"	m	class:netlib::net::EventLoop
+read	src/SocketsAct.cpp	/^ssize_t sockets::read(){$/;"	f	class:netlib::net::sockets
+readCallBack_	include/Channel.h	/^	EventCallBack readCallBack_;$/;"	m	class:netlib::net::Channel
+setNonBlockFd	src/SocketsAct.cpp	/^void setNonBlockFd(){$/;"	f	namespace:netlib::net
+setReadCallBack	include/Channel.h	/^	void setReadCallBack(const EventCallBack& cb){$/;"	f	class:netlib::net::Channel
+setWriteCallBack	include/Channel.h	/^	void setWriteCallBack(const EventCallBack& cb){$/;"	f	class:netlib::net::Channel
+sock_dgram	include/SocketsAct.h	/^	sock_dgram,$/;"	e	enum:netlib::net::sockets::sockopts
+sock_packet	include/SocketsAct.h	/^	sock_packet,$/;"	e	enum:netlib::net::sockets::sockopts
+sock_raw	include/SocketsAct.h	/^	sock_raw,$/;"	e	enum:netlib::net::sockets::sockopts
+sock_stream	include/SocketsAct.h	/^	sock_stream,$/;"	e	enum:netlib::net::sockets::sockopts
+sockets	include/SocketsAct.h	/^namespace sockets{$/;"	n	namespace:netlib::net
+sockopts	include/SocketsAct.h	/^typedef enum sockopts{$/;"	g	namespace:netlib::net::sockets
+updateOpt	src/EpollPoller.cpp	/^void EpollPoller::updateOpt(int operation){$/;"	f	class:netlib::net::EpollPoller
+write	src/SocketsAct.cpp	/^ssize_t sockets::write(){$/;"	f	class:netlib::net::sockets
+writeCallBack_	include/Channel.h	/^	EventCallBack writeCallBack_;$/;"	m	class:netlib::net::Channel
+~Channel	include/Channel.h	/^	~Channel(){$/;"	f	class:netlib::net::Channel
+~EventLoop	src/EventLoop.cpp	/^EventLoop::~EventLoop(){$/;"	f	class:netlib::net::EventLoop
