@@ -41,7 +41,7 @@ TimerQueue::TimerQueue(netlib::net::EventLoop* loop)
 	timerChannel_.enableReading();
 }
 
-void TimerQueue::addTimer(const TimerCallback& cb, double when, double interval)
+void TimerQueue::addTimer(const TimerCallback& cb, TimeStamp when, double interval)
 {
 	Timer* timer = new Timer(cb, interval);
 

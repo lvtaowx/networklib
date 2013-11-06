@@ -12,6 +12,7 @@
 #include <Channel.h>
 #include <EventLoop.h>
 #include <Timer.h>
+#include <TimeStamp.h>
 
 namespace netlib{
 namespace base{
@@ -24,7 +25,7 @@ public:
 	TimerQueue(EventLoop* loop);
 	~TimerQueue();
 
-	void addTimer(const TimerCallback& cb, double when, double interval);
+	void addTimer(const TimerCallback& cb, TimeStamp when, double interval);
 
 private:
 	void handleRead();

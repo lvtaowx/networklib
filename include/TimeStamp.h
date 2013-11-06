@@ -11,7 +11,19 @@
 namespace netlib{
 namespace base{
 
+#define kMicroSecondsPerSecond 1000000
+
 class TimeStamp{
+public:
+	TimeStamp()
+	: microSecondsSinceEpoch_(0)
+	{
+	}
+
+	static TimeStamp now();
+
+private:
+	int64_t microSecondsSinceEpoch_;
 
 };
 

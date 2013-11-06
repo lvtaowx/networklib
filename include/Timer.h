@@ -17,8 +17,9 @@ namespace base{
 class Timer
 {
 public:
-	Timer(const netlib::net::TimerCallback& task, double interval)
+	Timer(const netlib::net::TimerCallback& task, TimeStamp when, double interval)
 	:	task_(task),
+	 	triggerPoint_(when),
 	 	interval_(interval)
 	{}
 
@@ -27,10 +28,13 @@ public:
 		task_();
 	}
 
+
 	void restart();
 
 private:
 	netlib::net::TimerCallback task_;
+
+	TimeStamp triggerPoint_;
 	const double interval_;
 };
 
