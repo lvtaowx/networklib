@@ -58,8 +58,16 @@ void TimerQueue::insert(Timer* timer)
 
 }
 
+std::vector<TimerQueue::Entry> getExpired()
+{
+	std::vector<TimerQueue::Entry> expired;
+
+}
+
 void TimerQueue::handleRead()
 {
+	loop_->assertInLoopThread();
+	TimeStamp now(TimeStamp::now());
 
 }
 

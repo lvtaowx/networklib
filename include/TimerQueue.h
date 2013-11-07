@@ -28,13 +28,16 @@ public:
 	void addTimer(const TimerCallback& cb, TimeStamp when, double interval);
 
 private:
+	typedef std::pair<TimeStamp, Timer*> Entry;
+	typedef std::set<Timer> TimerList;
+
+private:
+	std::vector<Entry> getExpired();
 	void handleRead();
 	void addTimerInLoop(Timer* timer);
 	void insert(Timer* timer);
 
 private:
-	typedef std::set<Timer> TimerList;
-
 	EventLoop* loop_;
 	Channel timerChannel_;
 	TimerList timers_;

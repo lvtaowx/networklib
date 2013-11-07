@@ -10,10 +10,5 @@
 namespace netlib{
 namespace base{
 
-void Timer::restart()
-{
-
-}
-
 }
 }
