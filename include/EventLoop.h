@@ -42,6 +42,8 @@ public:
 	void assertInLoopThread();
 	bool isInLoopThread(){ return threadId_ == netlib::CurrentThread::tid(); }
 
+	static EventLoop* getEventLoopOfCurrentThread();
+
 private:
 	typedef std::vector<Channel *> ChannelList;
 

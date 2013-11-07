@@ -12,6 +12,12 @@
 
 const int kPollTimeMs = 10000;
 
+namespace {
+
+__thread netlib::net::EventLoop* t_loopInThisThread = 0;
+
+}
+
 namespace netlib{
 namespace net{
 
@@ -22,13 +28,24 @@ EventLoop::EventLoop()
 	  	eventHandling_(false),
 		pollerPtr_(new EpollPoller(this))
 {
-
+	if(t_loopInThisThread)
+	{
+		std::cout << "Another EventLoop in this thread  " << t_loopInThisThread << threadId_;
+	}
+	else
+	{
+		t_loopInThisThread = this;
+	}
 }
 
 EventLoop::~EventLoop(){
 
 }
 
+EventLoop* EventLoop::getEventLoopOfCurrentThread()
+{
+	return t_loopInThisThread;
+}
 
 void EventLoop::loop(){
 

@@ -43,7 +43,7 @@ TimerQueue::TimerQueue(netlib::net::EventLoop* loop)
 
 void TimerQueue::addTimer(const TimerCallback& cb, TimeStamp when, double interval)
 {
-	Timer* timer = new Timer(cb, interval);
+	Timer* timer = new Timer(cb, when, interval);
 
 }
 

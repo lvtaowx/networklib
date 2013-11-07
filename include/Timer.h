@@ -29,8 +29,6 @@ public:
 	}
 
 
-	void restart();
-
 private:
 	netlib::net::TimerCallback task_;
 
