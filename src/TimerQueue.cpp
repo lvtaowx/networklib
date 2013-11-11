@@ -24,12 +24,26 @@ int createTimerFd()
 	return timerFd;
 }
 
+void resetTimerFd(int timerfd, TimeStamp expiration)
+{
+	struct itimerspec newValue;
+	struct itimerspec oldValue;
+	bzero(&newValue, sizeof newValue);
+	bzero(&oldValue, sizeof oldValue);
+
+	newValue.it_value = 0;//TODO
+	int ret = ::timerfd_settime(timerfd, 0, &newValue, &oldValue);
+	if(ret)
+	{
+		printf("%s %s %d\n", __FILE__, __FUNCTION__, __LINE__);
+	}
+}
+
 void readTimerFd(int timerFd, int when)
 {
 	uint64_t howmany;
 	ssize_t n = ::read(timerFd, &howmany, sizeof(howmany));
 	printf("%s  %s \n", __FILE__, __FUNCTION__);
-
 }
 
 TimerQueue::TimerQueue(netlib::net::EventLoop* loop)
@@ -41,21 +55,46 @@ TimerQueue::TimerQueue(netlib::net::EventLoop* loop)
 	timerChannel_.enableReading();
 }
 
-void TimerQueue::addTimer(const TimerCallback& cb, TimeStamp when, double interval)
+TimerId TimerQueue::addTimer(const TimerCallback& cb, TimeStamp when, double interval)
 {
 	Timer* timer = new Timer(cb, when, interval);
+	loop_->runInLoop(boost::bind(&TimerQueue::addTimerInLoop, this, timer));
 
+	return TimerId(timer, timer->sequence());
 }
 
 void TimerQueue::addTimerInLoop(Timer* timer)
 {
+	loop_->assertInLoopThread();
+	bool earliestChanged = insert(timer); //TODO
 
-
+	if(earliestChanged)
+	{
+		resetTimerFd(timerFd_, timer->expiration());
+	}
 }
 
-void TimerQueue::insert(Timer* timer)
+bool TimerQueue::insert(Timer* timer)
 {
+	loop_->assertInLoopThread();
 
+	bool earliestChanged = false;
+	TimeStamp when = timer->expiration();
+	TimerList::iterator it = timers_.begin();
+	if(it == timers_.end() || when < it->first) //TODO 没有看明白
+	{
+		earliestChanged = true;
+	}
+
+	{
+		timers_.insert(Entry(when, timer));
+	}
+
+	{
+		//TODO  activeTimers
+	}
+
+	return earliestChanged;
 }
 
 std::vector<TimerQueue::Entry> getExpired()
@@ -68,6 +107,7 @@ void TimerQueue::handleRead()
 {
 	loop_->assertInLoopThread();
 	TimeStamp now(TimeStamp::now());
+
 
 }
 

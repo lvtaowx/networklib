@@ -19,7 +19,7 @@ class Timer
 public:
 	Timer(const netlib::net::TimerCallback& task, TimeStamp when, double interval)
 	:	task_(task),
-	 	triggerPoint_(when),
+	 	expiration_(when),
 	 	interval_(interval)
 	{}
 
@@ -28,12 +28,15 @@ public:
 		task_();
 	}
 
+	TimeStamp expiration() const { return expiration_; }
+	int64_t sequence() const { return sequence_;}
 
 private:
 	netlib::net::TimerCallback task_;
 
-	TimeStamp triggerPoint_;
+	TimeStamp expiration_;
 	const double interval_;
+	const int64_t sequence_;
 };
 
 

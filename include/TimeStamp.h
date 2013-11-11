@@ -20,6 +20,21 @@ public:
 	{
 	}
 
+	int64_t microSecondsSinceEpoch() const
+	{
+		return microSecondsSinceEpoch_;
+	}
+
+	bool operator<(const TimeStamp& rhs)
+	{
+		return this->microSecondsSinceEpoch() < rhs.microSecondsSinceEpoch();
+	}
+
+	bool operator==(const TimeStamp& rhs)
+	{
+		return this->microSecondsSinceEpoch() == rhs.microSecondsSinceEpoch();
+	}
+
 	static TimeStamp now();
 
 private:

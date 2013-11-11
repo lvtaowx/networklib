@@ -12,6 +12,7 @@
 #include <Channel.h>
 #include <EventLoop.h>
 #include <Timer.h>
+#include <TimerId.h>
 #include <TimeStamp.h>
 
 namespace netlib{
@@ -25,17 +26,17 @@ public:
 	TimerQueue(EventLoop* loop);
 	~TimerQueue();
 
-	void addTimer(const TimerCallback& cb, TimeStamp when, double interval);
+	TimerId addTimer(const TimerCallback& cb, TimeStamp when, double interval);
 
 private:
 	typedef std::pair<TimeStamp, Timer*> Entry;
-	typedef std::set<Timer> TimerList;
+	typedef std::set<Entry> TimerList;
 
 private:
 	std::vector<Entry> getExpired();
 	void handleRead();
 	void addTimerInLoop(Timer* timer);
-	void insert(Timer* timer);
+	bool insert(Timer* timer);
 
 private:
 	EventLoop* loop_;
