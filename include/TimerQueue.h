@@ -27,16 +27,19 @@ public:
 	~TimerQueue();
 
 	TimerId addTimer(const TimerCallback& cb, TimeStamp when, double interval);
+	void cancel(TimerId timerId);
 
 private:
 	typedef std::pair<TimeStamp, Timer*> Entry;
 	typedef std::set<Entry> TimerList;
 
 private:
-	std::vector<Entry> getExpired();
-	void handleRead();
 	void addTimerInLoop(Timer* timer);
+	void cancelInLoop(TimerId timerId);
 	bool insert(Timer* timer);
+	void reset(const std::vector<Entry>& expired, TimeStamp now);
+	std::vector<Entry> getExpired(TimeStamp when);
+	void handleRead();
 
 private:
 	EventLoop* loop_;

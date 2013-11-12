@@ -5,6 +5,8 @@
  *      Author: lvanlv
  */
 
+#include <stdint.h>
+
 #include <sys/timerfd.h>
 
 #include <TimerQueue.h>
@@ -39,7 +41,7 @@ void resetTimerFd(int timerfd, TimeStamp expiration)
 	}
 }
 
-void readTimerFd(int timerFd, int when)
+void readTimerFd(int timerFd, TimeStamp when)
 {
 	uint64_t howmany;
 	ssize_t n = ::read(timerFd, &howmany, sizeof(howmany));
@@ -63,6 +65,11 @@ TimerId TimerQueue::addTimer(const TimerCallback& cb, TimeStamp when, double int
 	return TimerId(timer, timer->sequence());
 }
 
+void TimerQueue::cancel(TimerId timerId)
+{
+	loop_->runInLoop(boost::bind(&TimerQueue::cancelInLoop, this, timerId));
+}
+
 void TimerQueue::addTimerInLoop(Timer* timer)
 {
 	loop_->assertInLoopThread();
@@ -72,6 +79,11 @@ void TimerQueue::addTimerInLoop(Timer* timer)
 	{
 		resetTimerFd(timerFd_, timer->expiration());
 	}
+}
+
+void TimerQueue::cancelInLoop(TimerId timerId)
+{
+
 }
 
 bool TimerQueue::insert(Timer* timer)
@@ -97,7 +109,12 @@ bool TimerQueue::insert(Timer* timer)
 	return earliestChanged;
 }
 
-std::vector<TimerQueue::Entry> getExpired()
+void TimerQueue::reset(const std::vector<Entry>& expired, TimeStamp now)
+{
+
+}
+
+std::vector<TimerQueue::Entry> TimerQueue::getExpired(TimeStamp when)
 {
 	std::vector<TimerQueue::Entry> expired;
 
@@ -107,9 +124,18 @@ void TimerQueue::handleRead()
 {
 	loop_->assertInLoopThread();
 	TimeStamp now(TimeStamp::now());
+	readTimerFd(timerFd_, now);
 
+	std::vector<Entry> expired = getExpired(now);
+
+	for(std::vector<Entry>::iterator it = expired.begin(); it < expired.end(); ++it)
+	{
+		it->second->run();
+	}
 
 }
+
+
 
 
 }
