@@ -5,8 +5,9 @@
  *      Author: lvanlv
  */
 
-#include <stdint.h>
+#define __STDC_LIMIT_MACROS //UINTPTR_MAX 为了展开 UINTPTR_MAX 在头文件 stdint.h中
 
+#include <stdint.h>
 #include <sys/timerfd.h>
 
 #include <TimerQueue.h>
@@ -26,6 +27,22 @@ int createTimerFd()
 	return timerFd;
 }
 
+struct timespec howMuchTimeFromNow(TimeStamp when)
+{
+	int64_t microSeconds = when.microSecondsSinceEpoch() - TimeStamp::now().microSecondsSinceEpoch();
+
+	if(microSeconds < 100)
+	{
+		microSeconds = 100;
+	}
+
+	struct timespec ts;
+	ts.tv_sec = static_cast<time_t>( microSeconds / kMicroSecondsPerSecond );
+	ts.tv_nsec = static_cast<long>( microSeconds % kMicroSecondsPerSecond * 1000);
+
+	return ts;
+}
+
 void resetTimerFd(int timerfd, TimeStamp expiration)
 {
 	struct itimerspec newValue;
@@ -33,7 +50,7 @@ void resetTimerFd(int timerfd, TimeStamp expiration)
 	bzero(&newValue, sizeof newValue);
 	bzero(&oldValue, sizeof oldValue);
 
-	newValue.it_value = 0;//TODO
+	newValue.it_value = howMuchTimeFromNow(expiration);
 	int ret = ::timerfd_settime(timerfd, 0, &newValue, &oldValue);
 	if(ret)
 	{
@@ -45,7 +62,7 @@ void readTimerFd(int timerFd, TimeStamp when)
 {
 	uint64_t howmany;
 	ssize_t n = ::read(timerFd, &howmany, sizeof(howmany));
-	printf("%s  %s \n", __FILE__, __FUNCTION__);
+	printf("%s  %s  read size %zu \n", __FILE__, __FUNCTION__, n);
 }
 
 TimerQueue::TimerQueue(netlib::net::EventLoop* loop)
@@ -73,8 +90,9 @@ void TimerQueue::cancel(TimerId timerId)
 void TimerQueue::addTimerInLoop(Timer* timer)
 {
 	loop_->assertInLoopThread();
-	bool earliestChanged = insert(timer); //TODO
+	bool earliestChanged = insert(timer);
 
+	// 如果 新加入的定时器比第一个要到触发时间的定时器的 时间还要短，则要重置timerFd
 	if(earliestChanged)
 	{
 		resetTimerFd(timerFd_, timer->expiration());
@@ -93,8 +111,9 @@ bool TimerQueue::insert(Timer* timer)
 	bool earliestChanged = false;
 	TimeStamp when = timer->expiration();
 	TimerList::iterator it = timers_.begin();
-	if(it == timers_.end() || when < it->first) //TODO 没有看明白
+	if(it == timers_.end() || when < it->first)
 	{
+		// 如果 新加入的定时器比第一个要到触发时间的定时器的 时间还要短，则要重置timerFd
 		earliestChanged = true;
 	}
 
@@ -118,6 +137,17 @@ std::vector<TimerQueue::Entry> TimerQueue::getExpired(TimeStamp when)
 {
 	std::vector<TimerQueue::Entry> expired;
 
+	/*
+	 * 这里看了很久，关键是要明白 std::pair  重载操作符 operator > < ==等等
+	 * 这是中重要的是 now 因为 pair 中的排序是看第一个来排序的，只有第一个不成功的情况下才看第二个的。
+	 */
+	Entry sentry(when, reinterpret_cast<Timer*>(UINTPTR_MAX));
+	TimerList::iterator end = timers_.lower_bound(sentry);  //lower_bound  不小与
+	assert(end == timers_.end() || when < end->first);  //TODO when 为什么小于 end->first;
+	std::copy(timers_.begin(), end, back_inserter(expired)); // 取出时间点在now 前面的定时器
+	timers_.erase(timers_.begin(), end);
+
+	return expired;
 }
 
 void TimerQueue::handleRead()
@@ -128,10 +158,13 @@ void TimerQueue::handleRead()
 
 	std::vector<Entry> expired = getExpired(now);
 
+	callingExpiredTimers_ = true;
 	for(std::vector<Entry>::iterator it = expired.begin(); it < expired.end(); ++it)
 	{
 		it->second->run();
 	}
+	callingExpiredTimers_ = false;
+
 
 }
 

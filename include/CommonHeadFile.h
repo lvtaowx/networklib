@@ -14,6 +14,7 @@
 #include <iostream>
 #include <string>
 #include <vector>
+#include <set>
 #include <map>
 
 #endif /* COMMONHEADFILE_H_ */

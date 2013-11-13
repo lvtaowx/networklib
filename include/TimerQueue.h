@@ -8,6 +8,10 @@
 #ifndef TIMERQUEUE_H_
 #define TIMERQUEUE_H_
 
+#include <CommonHeadFile.h>
+
+#include <boost/bind.hpp>
+
 #include <CallBacks.h>
 #include <Channel.h>
 #include <EventLoop.h>
@@ -48,6 +52,7 @@ private:
 
 	const int timerFd_;
 
+	bool callingExpiredTimers_;
 };
 
 }
