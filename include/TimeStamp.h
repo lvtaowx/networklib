@@ -34,6 +34,8 @@ public:
 		return microSecondsSinceEpoch_;
 	}
 
+	bool valid() const { return microSecondsSinceEpoch_ > 0;}
+
 //	bool operator<(const TimeStamp& rhs)
 //	{
 //		return this->microSecondsSinceEpoch() < rhs.microSecondsSinceEpoch();
@@ -48,7 +50,7 @@ public:
 	static TimeStamp invalid();
 
 private:
-	int64_t microSecondsSinceEpoch_;
+	int64_t microSecondsSinceEpoch_;  //定时器的时间
 
 };
 

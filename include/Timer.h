@@ -18,7 +18,7 @@ namespace base{
 class Timer
 {
 public:
-	Timer(const netlib::net::TimerCallback& task, TimeStamp when, double interval)
+	Timer(const netlib::net::TimerCallback& task, TimeStamp when, double interval = 0)
 	:	task_(task),
 	 	expiration_(when),
 	 	interval_(interval),
@@ -43,7 +43,6 @@ private:
 	TimeStamp expiration_;
 	const double interval_;
 	const int64_t sequence_;  //sequence 连续 顺序 次序
-
 	const bool repeat_;
 };
 

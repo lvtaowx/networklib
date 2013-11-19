@@ -14,6 +14,13 @@ namespace base{
 
 TimeStamp TimeStamp::now()
 {
+	/*
+	 * 	struct timeval
+		{
+			__time_t tv_sec;       	Epoch到现在的秒数	 Seconds
+			__suseconds_t tv_usec;  Epoch到现在的微妙数  Microseconds
+		};
+	 */
 	struct timeval tv;
 	gettimeofday(&tv, NULL);
 	int64_t seconds = tv.tv_sec;

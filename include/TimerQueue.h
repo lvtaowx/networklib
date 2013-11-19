@@ -36,6 +36,8 @@ public:
 private:
 	typedef std::pair<TimeStamp, Timer*> Entry;
 	typedef std::set<Entry> TimerList;
+	typedef std::pair<Timer*, int64_t> ActiveTimer;
+	typedef std::set<ActiveTimer> ActiveTimerSet;
 
 private:
 	void addTimerInLoop(Timer* timer);
@@ -49,6 +51,8 @@ private:
 	EventLoop* loop_;
 	Channel timerChannel_;
 	TimerList timers_;
+	ActiveTimerSet activeTimers_; //用于一个未到期的
+	ActiveTimerSet canceTimers_;
 
 	const int timerFd_;
 

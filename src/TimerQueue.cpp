@@ -101,6 +101,16 @@ void TimerQueue::addTimerInLoop(Timer* timer)
 
 void TimerQueue::cancelInLoop(TimerId timerId)
 {
+	loop_->assertInLoopThread();
+	ActiveTimer timer(timerId.timer_, timerId.sequence_);
+	ActiveTimerSet::iterator it = activeTimers_.find(timer);
+	if(it != activeTimers_.end())
+	{
+		size_t n = timers_.erase(Entry(it->first->expiration(), it->first));
+		assert(n == 1); (void)n;//TODO (void)n 陈硕老师说防止编译器警告，具体研究
+		delete it->first;
+		activeTimers_.erase(it);
+	}
 
 }
 
@@ -118,11 +128,15 @@ bool TimerQueue::insert(Timer* timer)
 	}
 
 	{
+		std::pair<TimerList::iterator, bool> result = \
 		timers_.insert(Entry(when, timer));
+		assert(result.second); (void)result;
 	}
 
 	{
-		//TODO  activeTimers
+		std::pair<ActiveTimerSet::iterator, bool> result = \
+		activeTimers_.insert(ActiveTimer(timer, timer->sequence()));
+		assert(result.second); (void)result;
 	}
 
 	return earliestChanged;
@@ -130,7 +144,29 @@ bool TimerQueue::insert(Timer* timer)
 
 void TimerQueue::reset(const std::vector<Entry>& expired, TimeStamp now)
 {
+	TimeStamp nextExpired;
+	for(std::vector<Entry>::const_iterator it = expired.begin(); it != expired.end(); ++it)
+	{
+		ActiveTimer aTimer(it->second, it->second->sequence());
+		if(it->second->repeat() && canceTimers_.find(aTimer) == canceTimers_.end())
+		{
+			it->second->restart(now);
+			insert(it->second);
+		}
+		else
+		{
+			delete it->second; //FIXME muduo 这里要求修复
+		}
+	}
 
+	if(!timers_.empty())
+	{
+		nextExpired = timers_.begin()->second->expiration();
+	}
+	if(nextExpired.valid())
+	{
+		resetTimerFd(timerFd_, nextExpired);
+	}
 }
 
 std::vector<TimerQueue::Entry> TimerQueue::getExpired(TimeStamp when)
@@ -142,12 +178,23 @@ std::vector<TimerQueue::Entry> TimerQueue::getExpired(TimeStamp when)
 	 * 这是中重要的是 now 因为 pair 中的排序是看第一个来排序的，只有第一个不成功的情况下才看第二个的。
 	 */
 	Entry sentry(when, reinterpret_cast<Timer*>(UINTPTR_MAX));
-	TimerList::iterator end = timers_.lower_bound(sentry);  //lower_bound  不小与
-	assert(end == timers_.end() || when < end->first);  //TODO when 为什么小于 end->first;
+	TimerList::iterator end = timers_.lower_bound(sentry);  //lower_bound  不小于
+	assert(end == timers_.end() || when < end->first);
+
+	/*
+	 * Copies the elements in the range, defined by [first, last)  first是闭区间，last 是开区间。
+	 * */
 	std::copy(timers_.begin(), end, back_inserter(expired)); // 取出时间点在now 前面的定时器
 	timers_.erase(timers_.begin(), end);
 
-	return expired;
+	//TODO activeTimers   删除到期的定时器
+	for(std::vector<Entry>::iterator it = expired.begin(); it != expired.end(); ++it)
+	{
+		ActiveTimer timer(it->second, it->second->sequence());
+		size_t n = activeTimers_.erase(timer);
+	}
+
+	return expired;  //expired 过期的 失效的
 }
 
 void TimerQueue::handleRead()
@@ -165,7 +212,7 @@ void TimerQueue::handleRead()
 	}
 	callingExpiredTimers_ = false;
 
-
+	reset(expired, now);
 }
 
 
