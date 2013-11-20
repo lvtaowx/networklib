@@ -77,6 +77,16 @@ TimerQueue::TimerQueue(netlib::net::EventLoop* loop)
 	timerChannel_.enableReading();
 }
 
+TimerQueue::~TimerQueue()
+{
+	::close(timerFd_);
+
+	for(TimerList::iterator it = timers_.begin(); it != timers_.end(); ++it)
+	{
+		delete it->second;
+	}
+}
+
 TimerId TimerQueue::addTimer(const TimerCallback& cb, TimeStamp when, double interval)
 {
 	Timer* timer = new Timer(cb, when, interval);

@@ -40,11 +40,12 @@ EpollPoller::EpollPoller(EventLoop* loop)
 
 }
 
-void EpollPoller::poll(int timeoutMs, ChannelList *activeChannels)
+TimeStamp EpollPoller::poll(int timeoutMs, ChannelList *activeChannels)
 {
 
 	int eventsNums = epoll_wait(epollfd_, &*events_.begin(), events_.size(), timeoutMs);
 
+	TimeStamp now(TimeStamp::now());
 	if(eventsNums > 0){
 		//TODO read   write
 		fillActiveChannels(eventsNums, activeChannels);
@@ -56,6 +57,7 @@ void EpollPoller::poll(int timeoutMs, ChannelList *activeChannels)
 		// error
 	}
 
+	return now;
 }
 
 void EpollPoller::updateChannel(Channel *channel)

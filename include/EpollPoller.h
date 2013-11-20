@@ -26,7 +26,7 @@ public:
 	EpollPoller(EventLoop* loop);
 	virtual ~EpollPoller();
 
-	virtual void poll(int timeoutMs, ChannelList *activeChannels);
+	virtual TimeStamp poll(int timeoutMs, ChannelList *activeChannels);
 	virtual void updateChannel(Channel *channel);
 	virtual void removeChannel(Channel *channel);
 
