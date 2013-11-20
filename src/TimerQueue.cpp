@@ -10,6 +10,9 @@
 #include <stdint.h>
 #include <sys/timerfd.h>
 
+#include <EventLoop.h>
+#include <Timer.h>
+#include <TimerId.h>
 #include <TimerQueue.h>
 
 namespace netlib{

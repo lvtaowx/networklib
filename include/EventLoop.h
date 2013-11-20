@@ -15,13 +15,17 @@
 //#include <Channel.h>
 #include <CommonHeadFile.h>
 #include <CurrentThread.h>
+#include <CallBacks.h>
 #include <TimerQueue.h>
+#include <TimerId.h>
+#include <TimeStamp.h>
 
 namespace netlib{
 namespace net{
 
 using namespace netlib::base;
 
+//class netlib::base::TimerQueue;
 class Poller;
 class Channel;
 
@@ -65,7 +69,6 @@ private:
 
 	boost::scoped_ptr<Poller> pollerPtr_;
 	boost::scoped_ptr<TimerQueue> timerQueuePtr_;
-
 };
 
 }

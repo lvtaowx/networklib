@@ -8,21 +8,22 @@
 #ifndef TIMERQUEUE_H_
 #define TIMERQUEUE_H_
 
-#include <CommonHeadFile.h>
-
 #include <boost/bind.hpp>
 
+#include <CommonHeadFile.h>
 #include <CallBacks.h>
 #include <Channel.h>
-#include <EventLoop.h>
-#include <Timer.h>
-#include <TimerId.h>
 #include <TimeStamp.h>
+//#include <EventLoop.h>
 
 namespace netlib{
 namespace base{
 
 using namespace netlib::net;
+
+class netlib::net::EventLoop;
+class Timer;
+class TimerId;
 
 class TimerQueue
 {

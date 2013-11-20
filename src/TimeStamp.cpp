@@ -6,6 +6,10 @@
  */
 
 #include <sys/time.h>
+#include <stdio.h>
+#define __STDC_FORMAT_MACROS
+#include <inttypes.h>
+#undef __STDC_FORMAT_MACROS
 
 #include <TimeStamp.h>
 
@@ -31,6 +35,15 @@ TimeStamp TimeStamp::now()
 TimeStamp TimeStamp::invalid()
 {
 	return TimeStamp();
+}
+
+std::string TimeStamp::toString() const
+{
+	  char buf[32] = {0};
+	  int64_t seconds = microSecondsSinceEpoch_ / kMicroSecondsPerSecond;
+	  int64_t microseconds = microSecondsSinceEpoch_ % kMicroSecondsPerSecond;
+	  snprintf(buf, sizeof(buf)-1, "%" PRId64 ".%06" PRId64 "", seconds, microseconds);
+	  return buf;
 }
 
 }

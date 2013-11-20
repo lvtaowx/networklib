@@ -46,6 +46,8 @@ public:
 //		return this->microSecondsSinceEpoch() == rhs.microSecondsSinceEpoch();
 //	}
 
+	std::string toString() const;
+
 	static TimeStamp now();
 	static TimeStamp invalid();
 

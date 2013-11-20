@@ -5,7 +5,9 @@
  *      Author: lvanlv
  */
 
+
 #include <EventLoop.h>
+//#include <TimerQueue.h>
 #include <Poller.h>
 #include <EpollPoller.h>
 #include <Channel.h>
@@ -20,6 +22,8 @@ __thread netlib::net::EventLoop* t_loopInThisThread = 0;
 
 namespace netlib{
 namespace net{
+
+using namespace netlib::base;
 
 EventLoop::EventLoop()
 	: 	looping_(false),
