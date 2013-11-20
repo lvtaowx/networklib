@@ -7,5 +7,10 @@
 
 #include <Atomic.h>
 
+namespace netlib{
+namespace base{
+
+}
+}
 
 

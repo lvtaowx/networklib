@@ -26,7 +26,8 @@ EventLoop::EventLoop()
 	  	quit_(false),
 	  	threadId_(netlib::CurrentThread::tid()),
 	  	eventHandling_(false),
-		pollerPtr_(new EpollPoller(this))
+		pollerPtr_(new EpollPoller(this)),
+		timerQueuePtr_(new TimerQueue(this))
 {
 	if(t_loopInThisThread)
 	{
@@ -109,6 +110,28 @@ void EventLoop::assertInLoopThread()
 	}
 }
 
+
+TimerId EventLoop::runAt(const TimeStamp time, const TimerCallback& cb)
+{
+	return timerQueuePtr_->addTimer(cb, time, 0.0);
+}
+
+TimerId EventLoop::runAfter(double delay, const TimerCallback& cb)
+{
+	TimeStamp time(addTime(TimeStamp::now(), delay));
+	return runAt(time, cb);
+}
+
+TimerId EventLoop::runEvery(double interval, const TimerCallback& cb)
+{
+	TimeStamp time(addTime(TimeStamp::now(), interval));
+	return timerQueuePtr_->addTimer(cb, time, interval);
+}
+
+void EventLoop::cancel(TimerId timerId)
+{
+	return timerQueuePtr_->cancel(timerId);
+}
 
 }
 }

@@ -15,9 +15,12 @@
 //#include <Channel.h>
 #include <CommonHeadFile.h>
 #include <CurrentThread.h>
+#include <TimerQueue.h>
 
 namespace netlib{
 namespace net{
+
+using namespace netlib::base;
 
 class Poller;
 class Channel;
@@ -44,6 +47,11 @@ public:
 
 	static EventLoop* getEventLoopOfCurrentThread();
 
+	TimerId runAt(const TimeStamp time, const TimerCallback& cb);
+	TimerId runAfter(double delay, const TimerCallback& cb);
+	TimerId runEvery(double interval, const TimerCallback& cb);
+	void cancel(TimerId timerId);
+
 private:
 	typedef std::vector<Channel *> ChannelList;
 
@@ -56,7 +64,7 @@ private:
 	Channel *currentActiveChannel_;
 
 	boost::scoped_ptr<Poller> pollerPtr_;
-
+	boost::scoped_ptr<TimerQueue> timerQueuePtr_;
 
 };
 
