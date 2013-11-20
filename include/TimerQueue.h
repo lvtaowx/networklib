@@ -52,7 +52,7 @@ private:
 	Channel timerChannel_;
 	TimerList timers_;
 	ActiveTimerSet activeTimers_; //用于一个未到期的
-	ActiveTimerSet canceTimers_;
+	ActiveTimerSet cancelTimers_;
 
 	const int timerFd_;
 

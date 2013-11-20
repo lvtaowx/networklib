@@ -10,6 +10,8 @@
 namespace netlib{
 namespace base{
 
+AtomicInt64 Timer::numCreated_;
+
 void Timer::restart(TimeStamp when)
 {
 	if(repeat_)

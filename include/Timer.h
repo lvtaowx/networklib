@@ -11,6 +11,7 @@
 #include <Thread.h>
 #include <CallBacks.h>
 #include <TimeStamp.h>
+#include <Atomic.h>
 
 namespace netlib{
 namespace base{
@@ -23,7 +24,7 @@ public:
 	 	expiration_(when),
 	 	interval_(interval),
 	 	repeat_(interval > 0.0),
-	 	sequence_(0)  //TODO  有何用
+	 	sequence_(numCreated_.incrementAndGet())  //TODO  产生唯一的TimerID
 	{}
 
 	void run() const
@@ -34,8 +35,9 @@ public:
 	TimeStamp expiration() const { return expiration_; }
 	int64_t sequence() const { return sequence_;}
 	bool repeat() const { return repeat_;}
-
 	void restart(TimeStamp when);
+
+	static int64_t numCreated() { return numCreated_.get(); }
 
 private:
 	netlib::net::TimerCallback task_;
@@ -44,6 +46,8 @@ private:
 	const double interval_;
 	const int64_t sequence_;  //sequence 连续 顺序 次序
 	const bool repeat_;
+
+	static AtomicInt64 numCreated_;
 };
 
 }

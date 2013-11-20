@@ -111,7 +111,10 @@ void TimerQueue::cancelInLoop(TimerId timerId)
 		delete it->first;
 		activeTimers_.erase(it);
 	}
-
+	else if(callingExpiredTimers_)
+	{
+		cancelTimers_.insert(timer);
+	}
 }
 
 bool TimerQueue::insert(Timer* timer)
@@ -148,7 +151,7 @@ void TimerQueue::reset(const std::vector<Entry>& expired, TimeStamp now)
 	for(std::vector<Entry>::const_iterator it = expired.begin(); it != expired.end(); ++it)
 	{
 		ActiveTimer aTimer(it->second, it->second->sequence());
-		if(it->second->repeat() && canceTimers_.find(aTimer) == canceTimers_.end())
+		if(it->second->repeat() && cancelTimers_.find(aTimer) == cancelTimers_.end())
 		{
 			it->second->restart(now);
 			insert(it->second);
@@ -192,6 +195,7 @@ std::vector<TimerQueue::Entry> TimerQueue::getExpired(TimeStamp when)
 	{
 		ActiveTimer timer(it->second, it->second->sequence());
 		size_t n = activeTimers_.erase(timer);
+		assert(n == 1);
 	}
 
 	return expired;  //expired 过期的 失效的
@@ -205,7 +209,8 @@ void TimerQueue::handleRead()
 
 	std::vector<Entry> expired = getExpired(now);
 
-	callingExpiredTimers_ = true;
+	callingExpiredTimers_ = true;//TODO 这里有疑问，若在多线程中会不会有,毕竟这里是无锁的
+	cancelTimers_.clear();
 	for(std::vector<Entry>::iterator it = expired.begin(); it < expired.end(); ++it)
 	{
 		it->second->run();
