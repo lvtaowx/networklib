@@ -31,7 +31,7 @@ EventLoop::EventLoop()
 	  	threadId_(netlib::CurrentThread::tid()),
 	  	eventHandling_(false),
 		pollerPtr_(new EpollPoller(this)),
-		timerQueuePtr_(new TimerQueue(this))
+		timerQueuePtr_(new TimerQueue(this)) //这里有个channel
 {
 	if(t_loopInThisThread)
 	{

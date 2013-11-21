@@ -22,6 +22,8 @@ int createTimerFd()
 {
 	int timerFd = ::timerfd_create(CLOCK_MONOTONIC, TFD_NONBLOCK | TFD_CLOEXEC);
 
+	printf(" timerFd = %d \n", timerFd);
+
 	if(timerFd < 0)
 	{
 		printf("create timerfd failed! file %s function %s  line %d\n", __FILE__, __FUNCTION__, __LINE__);

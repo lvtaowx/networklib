@@ -50,12 +50,13 @@ private:
 
 private:
 	EventLoop* loop_;
+
+	//timerFd必须早于 timerChannel_申明，因为初始化列表的初始顺序是看申明顺序而定的
+	const int timerFd_;
 	Channel timerChannel_;
 	TimerList timers_;
 	ActiveTimerSet activeTimers_; //用于一个未到期的
 	ActiveTimerSet cancelTimers_;
-
-	const int timerFd_;
 
 	bool callingExpiredTimers_;
 };

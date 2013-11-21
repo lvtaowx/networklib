@@ -62,11 +62,11 @@ private:
 	void update();
 
 private:
-	EventLoop *loop_;
 	const int fd_;
+	EventLoop *loop_;
 	int events_;
-	int revents_;
 	int index_;
+	int revents_;
 
 	static const int kNoneEvent;
 	static const int kReadEvent;

@@ -40,6 +40,11 @@ EpollPoller::EpollPoller(EventLoop* loop)
 
 }
 
+EpollPoller::~EpollPoller()
+{
+	::close(epollfd_);
+}
+
 TimeStamp EpollPoller::poll(int timeoutMs, ChannelList *activeChannels)
 {
 
