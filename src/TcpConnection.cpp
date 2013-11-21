@@ -28,7 +28,8 @@ void defaultMessageCallBack(const TcpConnectionPtr& conn, Buffer* buffer)
 
 TcpConnection::TcpConnection(EventLoop *loop, int sockfd)
 	: channelPtr_(new Channel(loop, sockfd) ),
-	  inputBuffer(new char[MAXSIZE])
+	  inputBuffer(new char[MAXSIZE]),
+	  loop_(loop)
 {
 	channelPtr_->setReadCallBack(boost::bind(&TcpConnection::readHandle, this));
 	channelPtr_->setWriteCallBack(boost::bind(&TcpConnection::writeHandle, this));
@@ -46,7 +47,17 @@ TcpConnection::~TcpConnection()
 
 void TcpConnection::send(const char* msg)
 {
+	if(state_ == kConnectioned)
+	{
+		if(loop_->isInLoopThread())
+		{
 
+		}
+		else
+		{
+
+		}
+	}
 }
 
 void TcpConnection::readHandle()

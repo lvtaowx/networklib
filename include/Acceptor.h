@@ -26,7 +26,7 @@ public:
 
 	bool isListening() const {return listening_;}
 
-	void setNewConnectedCallBack(const NewConnectedCallBack& cb)
+	void setNewConnectedCallback(const NewConnectedCallBack& cb)
 	{
 		newConnectedCallBack_  = cb;
 	}

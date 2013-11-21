@@ -62,6 +62,7 @@ private:
 
 	State state_;
 	char* inputBuffer;
+	EventLoop* loop_;
 
 };
 
