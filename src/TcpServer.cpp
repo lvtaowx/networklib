@@ -21,8 +21,8 @@ TcpServer::TcpServer(EventLoop *loop, const InetAddress& listenAddr, const std::
 	  loop_(loop),
 	  acceptor_(new Acceptor(loop, listenAddr)),
 	  threadPool_(new EventLoopThreadPool(loop)),
-	  connectioncb_(defaultConnectionCallback),
-	  messagecb_(defaultMessageCallback)
+	  connectionCb_(defaultConnectionCallback),
+	  messageCb_(defaultMessageCallback)
 {
 	acceptor_->setNewConnectedCallBack(boost::bind(&TcpServer::newConnection, this, _1, _2));
 }
@@ -57,10 +57,10 @@ void TcpServer::newConnection(int sockfd, const InetAddress& clientAddr)
 	char buf[32];
 
 	TcpConnectionPtr pconn(new TcpConnection(ioLoop, sockfd));
-	pconn->setConnectionCallBck(connectioncb_);
-	pconn->setMessageCallBack(messagecb_);
-	pconn->setWriteCompleteedCallBack(writeCompletecb_);
-	pconn->setCloseCallBack(boost::bind(&TcpServer::removeConnection, this, pconn));
+	pconn->setConnectionCallback(connectionCb_);
+	pconn->setMessageCallback(messageCb_);
+	pconn->setWriteCompleteedCallback(writeCompleteCb_);
+	pconn->setCloseCallback(boost::bind(&TcpServer::removeConnection, this, _1));
 
 
 }

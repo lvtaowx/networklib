@@ -24,19 +24,34 @@ class EventLoop;
 
 class TcpServer{
 public:
-	typedef boost::function<void (EventLoop*)> ThreadInitCallBack;
+	typedef boost::function<void (EventLoop*)> ThreadInitCallback;
 
 public:
 	TcpServer(EventLoop *loop, const InetAddress& listenAddr, const std::string& serverName);
 
-	void start();
 	void setThreadNum(int threadNum);
+	void setThreadInitCallback(const ThreadInitCallback& cb){} //TODO  i don't know what's the function
 
-	void newConnection(int sockfd, const InetAddress& clientAddr);
-	void removeConnection(const TcpConnectionPtr& pconn);
+	void setConnetionCallback(const ConnectionCallback& cb)
+	{
+		connectionCb_ = cb;
+	}
+
+	void setMessageCallback(const MessageCallback& cb)
+	{
+		messageCb_ = cb;
+	}
+
+	void setWritingCompleteCallback(const WriteCompleteCallback& cb)
+	{
+		writeCompleteCb_ = cb;
+	}
+
+	void start();
 
 private:
-
+	void newConnection(int sockfd, const InetAddress& clientAddr);
+	void removeConnection(const TcpConnectionPtr& pconn);
 
 private:
 	typedef std::map<std::string, TcpConnectionPtr> ConnectionMap;
@@ -47,10 +62,10 @@ private:
 	EventLoop *loop_;
 	boost::scoped_ptr<Acceptor> acceptor_;
 	boost::scoped_ptr<EventLoopThreadPool> threadPool_;
-	ConnectionCallback connectioncb_;
-	MessageCallback messagecb_;
-	WriteCompleteCallback writeCompletecb_;
-	ThreadInitCallBack threadInitcb_;
+	ConnectionCallback connectionCb_;
+	MessageCallback messageCb_;
+	WriteCompleteCallback writeCompleteCb_;
+	ThreadInitCallback threadInitcb_;
 	ConnectionMap connections_;
 };
 

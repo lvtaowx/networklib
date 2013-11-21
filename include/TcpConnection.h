@@ -23,22 +23,22 @@ public:
 	TcpConnection(EventLoop *loop, int sockfd);
 	~TcpConnection();
 
-	void setConnectionCallBck(const ConnectionCallback& cb)
+	void setConnectionCallback(const ConnectionCallback& cb)
 	{
 		connectionCb_ = cb;
 	}
 
-	void setCloseCallBack(const CloseCallback& cb)
+	void setCloseCallback(const CloseCallback& cb)
 	{
 		closeCb_ = cb;
 	}
 
-	void setMessageCallBack(const MessageCallback& cb)
+	void setMessageCallback(const MessageCallback& cb)
 	{
 		messageCb_ = cb;
 	}
 
-	void setWriteCompleteedCallBack(const WriteCompleteCallback& cb)
+	void setWriteCompleteedCallback(const WriteCompleteCallback& cb)
 	{
 		writeCompletedCb_ = cb;
 	}
