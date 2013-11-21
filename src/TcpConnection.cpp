@@ -11,7 +11,7 @@
 #include <EventLoop.h>
 #include <SocketAct.h>
 
-#define MAXSIZE 200
+#define MAXSIZE 500
 
 namespace netlib{
 namespace net{
@@ -42,6 +42,11 @@ TcpConnection::~TcpConnection()
 		delete inputBuffer;
 		inputBuffer = NULL;
 	}
+}
+
+void TcpConnection::send(const char* msg)
+{
+
 }
 
 void TcpConnection::readHandle()

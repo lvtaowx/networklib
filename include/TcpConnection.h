@@ -23,6 +23,8 @@ public:
 	TcpConnection(EventLoop *loop, int sockfd);
 	~TcpConnection();
 
+	void send(const char* msg);
+
 	void setConnectionCallback(const ConnectionCallback& cb)
 	{
 		connectionCb_ = cb;
@@ -50,6 +52,7 @@ private:
 	void errorHandle();
 
 private:
+	enum State{ kDisconnected, kConnectioned, kConnecting, kDisconnecting };
 	boost::scoped_ptr<Channel> channelPtr_;
 
 	ConnectionCallback connectionCb_;
@@ -57,6 +60,7 @@ private:
 	MessageCallback messageCb_;
 	WriteCompleteCallback writeCompletedCb_;
 
+	State state_;
 	char* inputBuffer;
 
 };
