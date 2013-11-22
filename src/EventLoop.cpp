@@ -7,7 +7,7 @@
 
 
 #include <EventLoop.h>
-//#include <TimerQueue.h>
+#include <TimerQueue.h>
 #include <Poller.h>
 #include <EpollPoller.h>
 #include <Channel.h>
@@ -15,9 +15,7 @@
 const int kPollTimeMs = 10000;
 
 namespace {
-
 __thread netlib::net::EventLoop* t_loopInThisThread = 0;
-
 }
 
 namespace netlib{
@@ -43,7 +41,8 @@ EventLoop::EventLoop()
 	}
 }
 
-EventLoop::~EventLoop(){
+EventLoop::~EventLoop()
+{
 
 }
 
@@ -52,8 +51,8 @@ EventLoop* EventLoop::getEventLoopOfCurrentThread()
 	return t_loopInThisThread;
 }
 
-void EventLoop::loop(){
-
+void EventLoop::loop()
+{
 	while(!quit_)
 	{
 		pollerPtr_->poll(kPollTimeMs, &activeChannels_);

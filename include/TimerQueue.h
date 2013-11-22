@@ -14,14 +14,15 @@
 #include <CallBacks.h>
 #include <Channel.h>
 #include <TimeStamp.h>
-//#include <EventLoop.h>
 
 namespace netlib{
-namespace base{
+namespace net{
+	class EventLoop;
+}
 
+namespace base{
 using namespace netlib::net;
 
-class netlib::net::EventLoop;
 class Timer;
 class TimerId;
 

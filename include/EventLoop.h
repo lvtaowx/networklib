@@ -16,16 +16,18 @@
 #include <CommonHeadFile.h>
 #include <CurrentThread.h>
 #include <CallBacks.h>
-#include <TimerQueue.h>
 #include <TimerId.h>
 #include <TimeStamp.h>
 
 namespace netlib{
+namespace base{
+	class TimerQueue;  // forward declared
+}
+
 namespace net{
 
 using namespace netlib::base;
 
-//class netlib::base::TimerQueue;
 class Poller;
 class Channel;
 
