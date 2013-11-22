@@ -47,7 +47,7 @@ TcpConnection::~TcpConnection()
 
 void TcpConnection::send(const char* msg)
 {
-	if(state_ == kConnectioned)
+	if(state_ == kConnected)
 	{
 		if(loop_->isInLoopThread())
 		{
@@ -60,9 +60,25 @@ void TcpConnection::send(const char* msg)
 	}
 }
 
+void TcpConnection::connectionEstablished()
+{
+	loop_->assertInLoopThread();
+	assert(state_ == kConnecting);
+	setState(kConnected);
+
+	//FIXME
+	//channelPtr_->tie();
+	channelPtr_->enableReading();
+
+	//FIXME share_from_this;  这里声明是使用了 share_ptr 编译不过
+//	connectionCb_(this);
+}
+
 void TcpConnection::readHandle()
 {
-	socketAct::read(channelPtr_->fd(), (void *)inputBuffer, MAXSIZE);
+//	socketAct::read(channelPtr_->fd(), (void *)inputBuffer, MAXSIZE); // just to test
+	loop_->assertInLoopThread();
+	//TODO
 }
 
 void TcpConnection::writeHandle()

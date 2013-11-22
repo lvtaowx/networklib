@@ -62,7 +62,7 @@ void TcpServer::newConnection(int sockfd, const InetAddress& clientAddr)
 	pconn->setWriteCompleteedCallback(writeCompleteCb_);
 	pconn->setCloseCallback(boost::bind(&TcpServer::removeConnection, this, _1));
 
-//	ioLoop->runInLoop(boost::bind());
+	ioLoop->runInLoop(boost::bind(&TcpConnection::connectionEstablished, pconn));
 }
 
 void TcpServer::removeConnection(const TcpConnectionPtr& pconn)

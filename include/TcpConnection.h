@@ -19,6 +19,7 @@ namespace net{
 class EventLoop;
 
 class TcpConnection{
+	enum State{ kDisconnected, kConnected, kConnecting, kDisconnecting };
 public:
 	TcpConnection(EventLoop *loop, int sockfd);
 	~TcpConnection();
@@ -45,14 +46,19 @@ public:
 		writeCompletedCb_ = cb;
 	}
 
+	void connectionEstablished();
+
 private:
 	void readHandle();
 	void writeHandle();
 	void closeHanle();
 	void errorHandle();
+	void setState(State s)
+	{
+		state_ = s;
+	}
 
 private:
-	enum State{ kDisconnected, kConnectioned, kConnecting, kDisconnecting };
 	boost::scoped_ptr<Channel> channelPtr_;
 
 	ConnectionCallback connectionCb_;
