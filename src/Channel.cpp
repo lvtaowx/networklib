@@ -14,7 +14,7 @@ namespace netlib{
 namespace net{
 
 const int Channel::kNoneEvent = 0;
-const int Channel::kReadEvent = POLLIN;
+const int Channel::kReadEvent = POLLIN | POLLPRI; //POLLPRI 有紧急数据可读
 const int Channel::kWriteEvent = POLLOUT;
 
 Channel::Channel(EventLoop *loop, int fd)

@@ -23,6 +23,11 @@ namespace net{
 namespace base{
 using namespace netlib::net;
 
+int createTimerFd();
+struct timespec howMuchTimeFromNow(TimeStamp when);
+void resetTimerFd(int timerfd, TimeStamp expiration);
+void readTimerFd(int timerFd, TimeStamp when);
+
 class Timer;
 class TimerId;
 

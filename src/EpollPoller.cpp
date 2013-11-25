@@ -31,7 +31,8 @@ namespace net{
 
 EpollPoller::EpollPoller(EventLoop* loop)
 	:	Poller(loop),
-	    epollfd_(::epoll_create(MAXEPOLLSIZE))
+	    epollfd_(::epoll_create(MAXEPOLLSIZE)),
+	    events_(kInitEpollEventsSize)
 {
 
 	if(epollfd_ < 0){
@@ -48,12 +49,21 @@ EpollPoller::~EpollPoller()
 TimeStamp EpollPoller::poll(int timeoutMs, ChannelList *activeChannels)
 {
 
+#ifdef DEBUG
+int size = events_.size();
+#endif
+
 	int eventsNums = epoll_wait(epollfd_, &*events_.begin(), events_.size(), timeoutMs);
 
 	TimeStamp now(TimeStamp::now());
 	if(eventsNums > 0){
 		//TODO read   write
 		fillActiveChannels(eventsNums, activeChannels);
+
+		if(eventsNums == events_.size())
+		{
+			events_.resize(events_.size() * 2);
+		}
 	}
 	else if(eventsNums == 0){
 		//nothing

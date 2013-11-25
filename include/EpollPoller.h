@@ -35,6 +35,7 @@ private:
 	void fillActiveChannels(int eventsNums, ChannelList *activeChannels);
 
 private:
+	static const int kInitEpollEventsSize = 16;
 	typedef std::vector<struct epoll_event> EventList;
 	typedef std::map<int, Channel*> ChannelMap;
 
