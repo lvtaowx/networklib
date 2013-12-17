@@ -12,11 +12,16 @@
 
 #include <Channel.h>
 #include <CallBacks.h>
+#include <Buffer.h>
 
 namespace netlib{
 namespace net{
 
 class EventLoop;
+
+/*
+ *  每个fTcpConnection 都绑定了自己的 channel
+ */
 
 class TcpConnection{
 	enum State{ kDisconnected, kConnected, kConnecting, kDisconnecting };
@@ -67,7 +72,8 @@ private:
 	WriteCompleteCallback writeCompletedCb_;
 
 	State state_;
-	char* inputBuffer;
+	Buffer inputBuffer;
+	Buffer outputBuffer;
 	EventLoop* loop_;
 
 };

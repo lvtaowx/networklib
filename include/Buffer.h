@@ -16,6 +16,19 @@ namespace net{
 /*
  * input and output buffer
  */
+
+/// A buffer class modeled after org.jboss.netty.buffer.ChannelBuffer
+///
+/// @code
+/// +-------------------+------------------+------------------+
+/// | prependable bytes |  readable bytes  |  writable bytes  |
+/// |                   |     (CONTENT)    |                  |
+/// +-------------------+------------------+------------------+
+/// |                   |                  |                  |
+/// 0      <=      readerIndex   <=   writerIndex    <=     size
+/// @endcode
+
+
 class Buffer{
 public:
 	static const size_t kCheapPrepend = 8;
@@ -27,7 +40,16 @@ public:
 		  readIndex_(kCheapPrepend),
 		  writeIndex_(kCheapPrepend)
 	{
+		assert(readableBytes() == 0);
+		assert(writeableBytes() == kInitialSize);
+		assert(prependableBytes() == kCheapPrepend);
+	}
 
+	void swap(Buffer& rhs)
+	{
+		buffer_.swap(rhs.buffer_);
+		std::swap(readIndex_, rhs.readIndex_);
+		std::swap(writeIndex_, rhs.writeIndex_);
 	}
 
 	size_t readableBytes() const
@@ -55,12 +77,28 @@ public:
 
 	}
 
-	std::string retrieveAllToString()
+	void retrieveAllToString()
 	{
 
 	}
 
+	char* beginWrite()
+	{
+		return begin()+writeIndex_;
+	}
+
+	void hasWriten(size_t len)
+	{
+		writeIndex_ += len;
+	}
+
 	ssize_t readFd(int fd);
+
+private:
+	char* begin()
+	{
+		return (&*buffer_.begin());
+	}
 
 private:
 	std::vector<char> buffer_;

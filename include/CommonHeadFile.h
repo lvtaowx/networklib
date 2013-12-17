@@ -9,6 +9,7 @@
 #define COMMONHEADFILE_H_
 
 #include <stdio.h>
+#include <assert.h>
 #include <string.h>
 #include <errno.h>
 #include <iostream>

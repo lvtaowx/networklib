@@ -59,7 +59,7 @@ private:
 	int threadNum_;
 	bool started_;
 	const std::string serverName_;
-	EventLoop *loop_;
+	EventLoop *baseLoop_;
 	boost::scoped_ptr<Acceptor> acceptor_;
 	boost::scoped_ptr<EventLoopThreadPool> threadPool_;
 	ConnectionCallback connectionCb_;

@@ -10,6 +10,7 @@
 #include <TcpConnection.h>
 #include <EventLoop.h>
 #include <SocketAct.h>
+#include <Buffer.h>
 
 #define MAXSIZE 500
 
@@ -28,7 +29,6 @@ void defaultMessageCallBack(const TcpConnectionPtr& conn, Buffer* buffer)
 
 TcpConnection::TcpConnection(EventLoop *loop, int sockfd)
 	: channelPtr_(new Channel(loop, sockfd) ),
-	  inputBuffer(new char[MAXSIZE]),
 	  loop_(loop)
 {
 	channelPtr_->setReadCallBack(boost::bind(&TcpConnection::readHandle, this));
@@ -38,11 +38,11 @@ TcpConnection::TcpConnection(EventLoop *loop, int sockfd)
 
 TcpConnection::~TcpConnection()
 {
-	if(inputBuffer)
-	{
-		delete inputBuffer;
-		inputBuffer = NULL;
-	}
+//	if(inputBuffer)
+//	{
+//		delete inputBuffer;
+//		inputBuffer = NULL;
+//	}
 }
 
 void TcpConnection::send(const char* msg)
@@ -78,7 +78,19 @@ void TcpConnection::readHandle()
 {
 //	socketAct::read(channelPtr_->fd(), (void *)inputBuffer, MAXSIZE); // just to test
 	loop_->assertInLoopThread();
-	//TODO
+	ssize_t n = inputBuffer.readFd(channelPtr_->fd());
+	if(n > 0)
+	{
+
+	}
+	else if(n == 0)
+	{
+
+	}
+	else
+	{
+
+	}
 }
 
 void TcpConnection::writeHandle()

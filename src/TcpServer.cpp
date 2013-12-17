@@ -18,9 +18,9 @@ namespace net{
 TcpServer::TcpServer(EventLoop *loop, const InetAddress& listenAddr, const std::string& serverName)
 	: started_(false),
 	  serverName_(serverName),
-	  loop_(loop),
-	  acceptor_(new Acceptor(loop, listenAddr)),
-	  threadPool_(new EventLoopThreadPool(loop)),
+	  baseLoop_(loop),
+	  acceptor_(new Acceptor(baseLoop_, listenAddr)),
+	  threadPool_(new EventLoopThreadPool(baseLoop_)),
 	  connectionCb_(defaultConnectionCallback),
 	  messageCb_(defaultMessageCallback)
 {
@@ -42,16 +42,14 @@ void TcpServer::start()
 
 	if(!acceptor_->isListening())
 	{
-		acceptor_->listen();
+		acceptor_->listen();//在创建acceptor的时候 初始化并且bind了 socket
 	}
-
-
 }
 
 void TcpServer::newConnection(int sockfd, const InetAddress& clientAddr)
 {
 	//TcpConnectionPtr conn(new TcpConnection()); //TODO not finish  it's important
-	loop_->assertInLoopThread(); // 暂时不明白意图
+	baseLoop_->assertInLoopThread(); // 暂时不明白意图
 	EventLoop *ioLoop = threadPool_->getNextLoop();
 
 	char buf[32];
