@@ -81,15 +81,15 @@ void TcpConnection::readHandle()
 	ssize_t n = inputBuffer.readFd(channelPtr_->fd());
 	if(n > 0)
 	{
-
+		messageCb_(shared_from_this(), &inputBuffer);
 	}
 	else if(n == 0)
 	{
-
+		closeHanle();
 	}
 	else
 	{
-
+		errorHandle();
 	}
 }
 
@@ -100,12 +100,12 @@ void TcpConnection::writeHandle()
 
 void TcpConnection::closeHanle()
 {
-
+	printf("\n this is closeHandle  %s %s \n", __FILE__, __FUNCTION__);
 }
 
 void TcpConnection::errorHandle()
 {
-
+	printf("\n this is errorHandle %s  %s \n", __FILE__, __FUNCTION__);
 }
 
 }}

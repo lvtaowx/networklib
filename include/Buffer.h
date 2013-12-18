@@ -67,6 +67,11 @@ public:
 		return readIndex_;
 	}
 
+	const char* peek() const
+	{
+		return begin() + readIndex_;
+	}
+
 	void retrieve(size_t len)
 	{
 
@@ -77,7 +82,12 @@ public:
 
 	}
 
-	void retrieveAllToString()
+	std::string retrieveAllToString()
+	{
+
+	}
+
+	std::string retrieveAsString()
 	{
 
 	}
@@ -96,6 +106,11 @@ public:
 
 private:
 	char* begin()
+	{
+		return (&*buffer_.begin());
+	}
+
+	const char* begin() const
 	{
 		return (&*buffer_.begin());
 	}

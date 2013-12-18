@@ -9,6 +9,8 @@
 #define TCPCONNECTION_H_
 
 #include <boost/scoped_ptr.hpp>
+#include <boost/shared_ptr.hpp>
+#include <boost/enable_shared_from_this.hpp>
 
 #include <Channel.h>
 #include <CallBacks.h>
@@ -23,7 +25,8 @@ class EventLoop;
  *  每个fTcpConnection 都绑定了自己的 channel
  */
 
-class TcpConnection{
+class TcpConnection : boost::noncopyable,
+					  public boost::enable_shared_from_this<TcpConnection>{
 	enum State{ kDisconnected, kConnected, kConnecting, kDisconnecting };
 public:
 	TcpConnection(EventLoop *loop, int sockfd);
