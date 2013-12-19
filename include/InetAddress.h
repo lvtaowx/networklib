@@ -15,7 +15,8 @@
 namespace netlib{
 namespace net{
 
-class InetAddress{
+class InetAddress
+{
 public:
 	explicit InetAddress(int port); //不可用 TODO
 	InetAddress(std::string ip, int port);
