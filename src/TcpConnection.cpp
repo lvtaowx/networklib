@@ -24,7 +24,7 @@ void defaultConnectionCallback(const TcpConnectionPtr& conn)
 
 void defaultMessageCallBack(const TcpConnectionPtr& conn, Buffer* buffer)
 {
-
+	buffer->retrieveAll();
 }
 
 TcpConnection::TcpConnection(EventLoop *loop, int sockfd)

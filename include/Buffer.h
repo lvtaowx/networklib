@@ -29,6 +29,13 @@ namespace net{
 /// @endcode
 
 
+/*
+ * buffer 中的数据用不着清零 因为读写都是有下标控制的，不会读取到上一次的数据
+ * prepend 即提供 prependable 空间，让程序能以很低的代价在数据前面添加几个字节。
+ *
+ *
+ */
+
 class Buffer{
 public:
 	static const size_t kCheapPrepend = 8;
@@ -36,7 +43,7 @@ public:
 
 public:
 	Buffer()
-		: buffer_( kCheapPrepend + kInitialSize ),
+		: buffer_( kCheapPrepend + kInitialSize ), //初始化vector的大小
 		  readIndex_(kCheapPrepend),
 		  writeIndex_(kCheapPrepend)
 	{
@@ -72,24 +79,61 @@ public:
 		return begin() + readIndex_;
 	}
 
+	void ensureWriteable(size_t len)
+	{
+		if(writeableBytes() <= len)
+		{
+			makespace(len);
+		}
+		else
+		{
+
+		}
+	}
+
+	void append(const char* data, size_t len)
+	{
+		ensureWriteable(len);
+		std::copy(data, data+len, beginWrite());
+		hasWriten(len);
+	}
+
+	void append(const void* data, size_t len)
+	{
+		append(static_cast<const char*>(data), len);
+	}
+
 	void retrieve(size_t len)
 	{
-
+		assert(len <= readableBytes());
+		if(len < readableBytes())
+		{
+			readIndex_ += len;
+		}
+		else
+		{
+			retrieveAll();
+		}
 	}
 
 	void retrieveAll()
 	{
-
+	    readIndex_ = kCheapPrepend;
+	    writeIndex_ = kCheapPrepend;
 	}
 
 	std::string retrieveAllToString()
 	{
-
+		return retrieveAsString(readableBytes());
 	}
 
-	std::string retrieveAsString()
+	std::string retrieveAsString(size_t len)
 	{
-
+		assert(len <= readableBytes());
+		std::string result(peek() + len);
+		//TODO this step is important
+		retrieve(len);
+		return result;
 	}
 
 	char* beginWrite()
@@ -113,6 +157,26 @@ private:
 	const char* begin() const
 	{
 		return (&*buffer_.begin());
+	}
+
+	void makespace(size_t len)
+	{
+		if(writeableBytes() + prependableBytes() < len + kCheapPrepend)
+		{
+			buffer_.resize(writeIndex_ + len);
+		}
+		else
+		{
+			assert(kCheapPrepend < readIndex_);
+			ssize_t readable = readableBytes();
+			std::copy(begin() + readIndex_,
+					  begin() + writeIndex_,
+					  begin() + kCheapPrepend );
+			readIndex_ = kCheapPrepend;
+			writeIndex_ = readIndex_ + readable;
+			//TODO 不太明白这里为什么要这样断言 莫非是多线程的缘故
+			assert(readable == readableBytes());
+		}
 	}
 
 private:
