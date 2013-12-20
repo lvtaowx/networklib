@@ -124,15 +124,16 @@ ssize_t socketAct::write(int sockfd, void *buf, size_t count)
 	return ::write(sockfd, buf, count);
 }
 
-void close(int sockfd)
+void socketAct::close(int sockfd)
 {
 	if(::close(sockfd) < 0)
 	{
-		printf("sockfd close!\n");
+		printf("sockfd close!  %s   %s \n", __FILE__, __FUNCTION__);
 	}
 }
 
-void socketAct::setNonBlockFd(){
+void socketAct::setNonBlockFd()
+{
 
 }
 

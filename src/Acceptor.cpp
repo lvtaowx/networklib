@@ -22,6 +22,11 @@ Acceptor::Acceptor(EventLoop *loop, const InetAddress& listenAddr)
 	acceptChannel_.setReadCallBack(boost::bind(&Acceptor::readHandle, this));
 }
 
+Acceptor::~Acceptor()
+{
+
+}
+
 void Acceptor::listen()
 {
 	acceptSocket_.listen();

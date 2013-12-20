@@ -22,7 +22,7 @@ void defaultConnectionCallback(const TcpConnectionPtr& conn)
 
 }
 
-void defaultMessageCallBack(const TcpConnectionPtr& conn, Buffer* buffer)
+void defaultMessageCallback(const TcpConnectionPtr& conn, Buffer* buffer)
 {
 	buffer->retrieveAll();
 }

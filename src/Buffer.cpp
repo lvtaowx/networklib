@@ -24,6 +24,10 @@ ssize_t Buffer::readFd(int fd)
 	vec[1].iov_len = sizeof(extrabuf);
 
 	const ssize_t n = socketAct::readv(fd, vec, 2);
+	if(n <= 0)
+	{
+
+	}
 
 }
 

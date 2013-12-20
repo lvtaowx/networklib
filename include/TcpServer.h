@@ -14,13 +14,15 @@
 
 #include <InetAddress.h>
 #include <CallBacks.h>
-#include <EventLoopThreadPool.h>
+//#include <EventLoopThreadPool.h>
+//#include <Acceptor.h>
 
 namespace netlib{
 namespace net{
 
 class Acceptor;
 class EventLoop;
+class EventLoopThreadPool;
 
 class TcpServer{
 public:

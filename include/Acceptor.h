@@ -21,6 +21,7 @@ public:
 	typedef boost::function<void (int sockfd, const InetAddress& )> NewConnectedCallBack;
 
 	Acceptor(EventLoop *loop, const InetAddress& listenAddr);
+	~Acceptor();
 	void listen();
 	void readHandle();
 
@@ -28,7 +29,7 @@ public:
 
 	void setNewConnectedCallback(const NewConnectedCallBack& cb)
 	{
-		newConnectedCallBack_  = cb;
+		newConnectedCallBack_ = cb;
 	}
 
 

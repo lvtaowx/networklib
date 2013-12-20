@@ -168,7 +168,7 @@ private:
 		else
 		{
 			assert(kCheapPrepend < readIndex_);
-			ssize_t readable = readableBytes();
+			size_t readable = readableBytes();
 			std::copy(begin() + readIndex_,
 					  begin() + writeIndex_,
 					  begin() + kCheapPrepend );
