@@ -21,14 +21,10 @@ Channel::Channel(EventLoop *loop, int fd)
 	: fd_(fd),
 	  loop_(loop),
 	  events_(0),
+	  revents_(0),
 	  index_(-1)
 {
 
-}
-
-bool Channel::isNoneEvent()
-{
-	return events_ == kNoneEvent;
 }
 
 void Channel::handleEvent()
@@ -64,6 +60,18 @@ void Channel::disableWriting()
 {
 	events_ &= -kWriteEvent;
 	update();
+}
+
+void Channel::disableAll()
+{
+	events_ &= kNoneEvent;
+	update();
+}
+
+void Channel::remove()
+{
+	assert( isNoneEvent() );
+	loop_->removeChannel(this);
 }
 
 void Channel::update()

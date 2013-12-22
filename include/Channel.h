@@ -36,7 +36,7 @@ public:
 
 	void set_revents(int revents){ revents_ = revents; }
 	void set_index(int idx) { index_ = idx;}
-	bool isNoneEvent();
+	bool isNoneEvent() const { return events_ == kNoneEvent; }
 	EventLoop* ownerLoop() const { return loop_; }
 
 	void handleEvent();
@@ -57,6 +57,9 @@ public:
 	void enableReading();
 	void enableWriting();
 	void disableWriting();
+	void disableAll();
+
+	void remove();
 
 private:
 	void update();

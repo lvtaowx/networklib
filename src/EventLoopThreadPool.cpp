@@ -5,6 +5,8 @@
  *      Author: lvanlv
  */
 
+#include <boost/implicit_cast.hpp>
+
 #include <EventLoopThreadPool.h>
 #include <EventLoop.h>
 #include <EventLoopThread.h>

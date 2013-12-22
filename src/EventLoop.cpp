@@ -43,7 +43,8 @@ EventLoop::EventLoop()
 
 EventLoop::~EventLoop()
 {
-
+	//TODO
+	printf(" %s %s\n", __FILE__, __FUNCTION__);
 }
 
 EventLoop* EventLoop::getEventLoopOfCurrentThread()

@@ -24,7 +24,8 @@ Acceptor::Acceptor(EventLoop *loop, const InetAddress& listenAddr)
 
 Acceptor::~Acceptor()
 {
-
+	acceptChannel_.disableAll();
+	acceptChannel_.remove();
 }
 
 void Acceptor::listen()
