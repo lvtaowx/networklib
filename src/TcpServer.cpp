@@ -8,10 +8,10 @@
 #include <boost/bind.hpp>
 
 #include <TcpServer.h>
-#include <Acceptor.h>
+//#include <Acceptor.h>
 #include <TcpConnection.h>
 #include <EventLoop.h>
-#include <EventLoopThreadPool.h>
+//#include <EventLoopThreadPool.h>
 
 namespace netlib{
 namespace net{

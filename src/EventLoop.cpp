@@ -62,6 +62,7 @@ void EventLoop::loop()
 		for(ChannelList::iterator iter = activeChannels_.begin(); iter != activeChannels_.end(); ++iter)
 		{
 			currentActiveChannel_ = *iter;
+			printf("the channel's fd is %d\n", currentActiveChannel_->fd());
 			currentActiveChannel_->handleEvent();
 		}
 		currentActiveChannel_ = NULL;

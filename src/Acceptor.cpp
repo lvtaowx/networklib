@@ -40,6 +40,8 @@ void Acceptor::readHandle()
 	InetAddress clientAddr(0);
 	int connfd = acceptSocket_.accept(&clientAddr);
 
+	printf("connected from %s, port %d\n");
+
 	if(connfd >= 0)
 	{
 		if(newConnectedCallBack_)

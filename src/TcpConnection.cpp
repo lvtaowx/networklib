@@ -19,16 +19,18 @@ namespace net{
 
 void defaultConnectionCallback(const TcpConnectionPtr& conn)
 {
-
+	printf("%s   %s\n", __FILE__, __FUNCTION__);
 }
 
 void defaultMessageCallback(const TcpConnectionPtr& conn, Buffer* buffer)
 {
+	printf("%s   %s \n", __FILE__, __FUNCTION__);
 	buffer->retrieveAll();
 }
 
 TcpConnection::TcpConnection(EventLoop *loop, int sockfd)
 	: channelPtr_(new Channel(loop, sockfd) ),
+	  state_(kConnecting),
 	  loop_(loop)
 {
 	channelPtr_->setReadCallBack(boost::bind(&TcpConnection::readHandle, this));
@@ -38,11 +40,7 @@ TcpConnection::TcpConnection(EventLoop *loop, int sockfd)
 
 TcpConnection::~TcpConnection()
 {
-//	if(inputBuffer)
-//	{
-//		delete inputBuffer;
-//		inputBuffer = NULL;
-//	}
+	printf("%s  %s\n", __FILE__, __FUNCTION__);
 }
 
 void TcpConnection::send(const char* msg)
@@ -71,7 +69,7 @@ void TcpConnection::connectionEstablished()
 	channelPtr_->enableReading();
 
 	//FIXME share_from_this;  这里声明是使用了 share_ptr 编译不过
-//	connectionCb_(this);
+	connectionCb_(shared_from_this());
 }
 
 void TcpConnection::readHandle()

@@ -83,6 +83,13 @@ void EpollPoller::updateChannel(Channel *channel)
 		int fd = channel->fd();
 		channels_[fd] = channel;
 
+		//debug
+		std::map<int, Channel*>::iterator iter = channels_.begin();
+		for(; iter != channels_.end(); ++iter)
+		{
+			printf("fd %d\n", iter->first);
+		}
+
 		channel->set_index(kAdded);
 		updateOpt(EPOLL_ADD, channel);
 	}

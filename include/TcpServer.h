@@ -14,15 +14,16 @@
 
 #include <InetAddress.h>
 #include <CallBacks.h>
-//#include <EventLoopThreadPool.h>
-//#include <Acceptor.h>
+#include <EventLoopThreadPool.h>
+#include <Acceptor.h>
 
 namespace netlib{
 namespace net{
 
-class Acceptor;
+//FIXME 如果是前置声明则 测试程序会报错
+//class Acceptor;
 class EventLoop;
-class EventLoopThreadPool;
+//class EventLoopThreadPool;
 
 class TcpServer{
 public:

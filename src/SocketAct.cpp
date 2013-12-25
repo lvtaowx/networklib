@@ -50,7 +50,7 @@ int socketAct::connect(int sockfd, const struct sockaddr_in& addr)
 
 	int error = ::connect(sockfd, (struct sockaddr *)(&addr), static_cast<socklen_t>(sizeof addr));
     if (error < 0) {
-         printf("bind failed!  the error info %d  %s\n", errno, strerror(errno));
+         printf("connect failed!  the error info %d  %s\n", errno, strerror(errno));
          perror(strerror(errno));
          return -1;
     }

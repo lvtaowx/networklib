@@ -7,9 +7,9 @@
 
 #include <boost/implicit_cast.hpp>
 
-#include <EventLoopThreadPool.h>
 #include <EventLoop.h>
 #include <EventLoopThread.h>
+#include <EventLoopThreadPool.h>
 
 namespace netlib{
 namespace net{
