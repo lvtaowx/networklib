@@ -119,7 +119,7 @@ ssize_t socketAct::readv(int sockfd, const struct iovec *iov, int iocnt)
 	return ::readv(sockfd, iov, iocnt);
 }
 
-ssize_t socketAct::write(int sockfd, void *buf, size_t count)
+ssize_t socketAct::write(int sockfd, const void *buf, size_t count)
 {
 	return ::write(sockfd, buf, count);
 }

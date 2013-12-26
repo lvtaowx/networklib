@@ -53,7 +53,10 @@ TimeStamp EpollPoller::poll(int timeoutMs, ChannelList *activeChannels)
 int size = events_.size();
 #endif
 
-	int eventsNums = epoll_wait(epollfd_, &*events_.begin(), events_.size(), timeoutMs);
+	int eventsNums = epoll_wait(epollfd_, \
+								&*events_.begin(), \
+								static_cast<int>(events_.size()), \
+								timeoutMs);
 
 	TimeStamp now(TimeStamp::now());
 	if(eventsNums > 0){
@@ -81,6 +84,7 @@ void EpollPoller::updateChannel(Channel *channel)
 	if(index == kNew || index == kDeleted)
 	{
 		int fd = channel->fd();
+		assert(channels_.find(fd) == channels_.end());
 		channels_[fd] = channel;
 
 		//debug
@@ -130,6 +134,9 @@ void EpollPoller::updateOpt(int operation, Channel *channel)
 	int fd = channel->fd();;
 
 	int error  = ::epoll_ctl(epollfd_, operation, fd, &event);
+
+	std::cout << "epoll_ctl op=" << operation << " fd=" << fd << std::endl;
+
 	if (error < 0) {
 	    printf("bind failed!  the error info %d  %s\n", errno, strerror(errno));
 	    perror(strerror(errno));
@@ -148,6 +155,7 @@ void EpollPoller::fillActiveChannels(int eventsNums, ChannelList *activeChannels
 		channel->set_revents(events_[i].events);
 
 		//int fd = channel->fd();
+		printf("this channel address %p \n", channel);
 
 		activeChannels->push_back(channel);
 	}

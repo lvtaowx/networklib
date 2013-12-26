@@ -38,7 +38,7 @@ int accept(int sockfd, struct sockaddr_in& addr); //返回一个链接套接字
 ssize_t read(int sockfd, void *buf, size_t count);
 ssize_t readv(int sockfd, const struct iovec *iov, int iocnt);
 
-ssize_t write(int sockfd, void *buf, size_t count);
+ssize_t write(int sockfd, const void *buf, size_t count);
 
 void close(int sockfd);
 

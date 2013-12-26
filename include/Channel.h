@@ -69,7 +69,7 @@ private:
 	EventLoop *loop_;
 	int events_;
 	int index_;
-	int revents_;
+	int revents_; //根据返回的revents来判断是什么事件
 
 	static const int kNoneEvent;
 	static const int kReadEvent;
@@ -78,8 +78,6 @@ private:
 	EventCallBack readCallBack_;
 	EventCallBack writeCallBack_;
 	EventCallBack closeCallBack_;
-
-
 };
 
 }

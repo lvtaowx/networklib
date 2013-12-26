@@ -49,13 +49,26 @@ void TcpConnection::send(const char* msg)
 	{
 		if(loop_->isInLoopThread())
 		{
-
+			size_t len = sizeof(msg);
+			sendInLoop(msg, len);
 		}
 		else
 		{
 
 		}
 	}
+}
+
+void TcpConnection::sendInLoop(const char* message, size_t len)
+{
+	if(state_ == kDisconnected)
+	{
+		printf("disconnected give up writing\n");
+		return;
+	}
+
+	socketAct::write(channelPtr_->fd(), message, len);
+
 }
 
 void TcpConnection::connectionEstablished()

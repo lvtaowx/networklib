@@ -16,6 +16,7 @@
 #include <CallBacks.h>
 #include <EventLoopThreadPool.h>
 #include <Acceptor.h>
+#include <TcpConnection.h>
 
 namespace netlib{
 namespace net{
@@ -33,7 +34,12 @@ public:
 	TcpServer(EventLoop *loop, const InetAddress& listenAddr, const std::string& serverName);
 
 	void setThreadNum(int threadNum);
-	void setThreadInitCallback(const ThreadInitCallback& cb){} //TODO  i don't know what's the function
+
+	//TODO  i don't know what's the function
+	void setThreadInitCallback(const ThreadInitCallback& cb)
+	{
+		threadInitcb_ = cb;
+	}
 
 	void setConnetionCallback(const ConnectionCallback& cb)
 	{

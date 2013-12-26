@@ -54,8 +54,15 @@ EventLoop* EventLoop::getEventLoopOfCurrentThread()
 
 void EventLoop::loop()
 {
+	assert(!looping_);
+	looping_ = true;
+	quit_ = false;
+
+	printf( "EventLoop %p start looping\n", this);
+
 	while(!quit_)
 	{
+		activeChannels_.clear();
 		pollerPtr_->poll(kPollTimeMs, &activeChannels_);
 
 		eventHandling_ = true;

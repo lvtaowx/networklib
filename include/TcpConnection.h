@@ -66,6 +66,8 @@ private:
 		state_ = s;
 	}
 
+	void sendInLoop(const char* message, size_t len);
+
 private:
 	boost::scoped_ptr<Channel> channelPtr_;
 

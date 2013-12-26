@@ -9,7 +9,6 @@
 
 #include <TcpServer.h>
 //#include <Acceptor.h>
-#include <TcpConnection.h>
 #include <EventLoop.h>
 //#include <EventLoopThreadPool.h>
 
@@ -39,6 +38,7 @@ void TcpServer::start()
 	if(!started_)
 	{
 		started_ = true;
+		threadPool_->start(threadInitcb_);
 	}
 
 	if(!acceptor_->isListening())
