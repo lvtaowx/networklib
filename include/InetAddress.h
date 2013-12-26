@@ -24,6 +24,8 @@ public:
 	const struct sockaddr_in& getNetAddress() const {return addr_;}
 	void setSockAddrInet(const struct sockaddr_in& addr);
 
+	std::string toIpPort() const;
+
 private:
 	struct sockaddr_in addr_;
 };

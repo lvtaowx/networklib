@@ -42,7 +42,6 @@ private:
 	int epollfd_;
 	EventList events_;
 	ChannelMap channels_;
-
 };
 
 }

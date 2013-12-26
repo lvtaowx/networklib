@@ -45,7 +45,11 @@ void InetAddress::setSockAddrInet(const sockaddr_in& addr)
 	addr_ = addr;
 }
 
-
+std::string InetAddress::toIpPort() const
+{
+	std::string str;
+	return str;
+}
 
 }
 }
