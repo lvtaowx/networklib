@@ -5,9 +5,11 @@
  *      Author: lvanlv
  */
 
-#include <InetAddress.h>
 #include <string.h>  //bzero 的头文件
 #include <arpa/inet.h>
+
+#include <SocketAct.h>
+#include <InetAddress.h>
 
 namespace netlib{
 namespace net{
@@ -47,8 +49,9 @@ void InetAddress::setSockAddrInet(const sockaddr_in& addr)
 
 std::string InetAddress::toIpPort() const
 {
-	std::string str;
-	return str;
+	char buf[32];
+	socketAct::toIpPort(buf, sizeof(buf), addr_);
+	return buf;
 }
 
 }

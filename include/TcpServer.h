@@ -68,6 +68,7 @@ private:
 	int threadNum_;
 	bool started_;
 	const std::string serverName_;
+	const std::string hostPort_;
 	EventLoop *baseLoop_;
 	boost::scoped_ptr<Acceptor> acceptor_;
 	boost::scoped_ptr<EventLoopThreadPool> threadPool_;
@@ -76,6 +77,7 @@ private:
 	WriteCompleteCallback writeCompleteCb_;
 	ThreadInitCallback threadInitcb_;
 	ConnectionMap connections_;
+	int nextConnnID;
 };
 
 }

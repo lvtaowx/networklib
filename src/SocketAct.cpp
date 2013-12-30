@@ -137,6 +137,22 @@ void socketAct::setNonBlockFd()
 
 }
 
+void socketAct::toIpPort(char* buf, size_t size,
+		const struct sockaddr_in& addr)
+{
+	uint16_t port =  be16toh(addr.sin_port);
+	char host[INET_ADDRSTRLEN] = "INVALID";
+	toIp(host, sizeof host, addr);
+	snprintf(buf, size, "%s:%u", host, port);
+}
+
+void socketAct::toIp(char* buf, size_t size,
+		const struct sockaddr_in& addr)
+{
+	assert(size >= INET_ADDRSTRLEN);
+	::inet_ntop(AF_INET, &addr.sin_addr, buf, static_cast<socklen_t>(size));
+}
+
 }
 }
 

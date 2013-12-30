@@ -36,7 +36,6 @@ public:
 
 	void setReusePort(bool on);
 
-
 private:
 	const int sockfd_;
 

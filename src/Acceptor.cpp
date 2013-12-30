@@ -40,7 +40,8 @@ void Acceptor::readHandle()
 	InetAddress clientAddr(0);
 	int connfd = acceptSocket_.accept(&clientAddr);
 
-	printf("connected from %s, port %d\n");
+	std::string clinetIpPort = clientAddr.toIpPort();
+	printf("connected from %s\n", clinetIpPort.c_str());
 
 	if(connfd >= 0)
 	{

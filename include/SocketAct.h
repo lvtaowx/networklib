@@ -44,6 +44,12 @@ void close(int sockfd);
 
 void setNonBlockFd();
 
+void toIpPort(char* buf, size_t size,
+		const struct sockaddr_in& addr);
+
+void toIp(char* buf, size_t size,
+			const struct sockaddr_in& addr);
+
 }
 
 }

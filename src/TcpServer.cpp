@@ -18,11 +18,13 @@ namespace net{
 TcpServer::TcpServer(EventLoop *loop, const InetAddress& listenAddr, const std::string& serverName)
 	: started_(false),
 	  serverName_(serverName),
+	  hostPort_(listenAddr.toIpPort()),
 	  baseLoop_(loop),
 	  acceptor_(new Acceptor(baseLoop_, listenAddr)),
 	  threadPool_(new EventLoopThreadPool(baseLoop_)),
 	  connectionCb_(defaultConnectionCallback),
-	  messageCb_(defaultMessageCallback)
+	  messageCb_(defaultMessageCallback),
+	  nextConnnID(1)
 {
 	acceptor_->setNewConnectedCallback(boost::bind(&TcpServer::newConnection, this, _1, _2));
 }
@@ -54,7 +56,15 @@ void TcpServer::newConnection(int sockfd, const InetAddress& clientAddr)
 	baseLoop_->assertInLoopThread(); // 暂时不明白意图
 	EventLoop *ioLoop = threadPool_->getNextLoop();
 
+	++nextConnnID;
+	std::string connName;
+	char buf[32];
+	snprintf(buf, sizeof buf, ":%s#%d", hostPort_.c_str(), nextConnnID);
+	connName = serverName_ + buf;
+
 	TcpConnectionPtr pconn(new TcpConnection(ioLoop, sockfd));
+	connections_[connName] = pconn;
+
 	pconn->setConnectionCallback(connectionCb_);
 	pconn->setMessageCallback(messageCb_);
 	pconn->setWriteCompleteedCallback(writeCompleteCb_);

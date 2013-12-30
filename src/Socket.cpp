@@ -5,6 +5,8 @@
  *      Author: lvanlv
  */
 
+#include <stdio.h>
+
 #include <Socket.h>
 #include <SocketAct.h>
 
@@ -41,12 +43,11 @@ void Socket::setKeepAlive(bool on)
 	return ;
 }
 
-void Socket::setReusePort(bool on){
+void Socket::setReusePort(bool on)
+{
 
 	return ;
 }
-
-
 
 }
 }
