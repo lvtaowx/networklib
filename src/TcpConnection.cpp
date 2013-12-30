@@ -96,10 +96,12 @@ void TcpConnection::readHandle()
 	}
 	else if(n == 0)
 	{
+		printf("read size is 0   %s  %d\n", __FUNCTION__, __FILE__);
 		closeHanle();
 	}
 	else
 	{
+		printf("read error is 0   %s  %d\n", __FUNCTION__, __FILE__);
 		errorHandle();
 	}
 }
