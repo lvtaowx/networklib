@@ -8,9 +8,9 @@
 #include <boost/bind.hpp>
 
 #include <TcpServer.h>
-//#include <Acceptor.h>
+#include <Acceptor.h>
 #include <EventLoop.h>
-//#include <EventLoopThreadPool.h>
+#include <EventLoopThreadPool.h>
 
 namespace netlib{
 namespace net{
@@ -27,6 +27,11 @@ TcpServer::TcpServer(EventLoop *loop, const InetAddress& listenAddr, const std::
 	  nextConnnID(1)
 {
 	acceptor_->setNewConnectedCallback(boost::bind(&TcpServer::newConnection, this, _1, _2));
+}
+
+TcpServer::~TcpServer()
+{
+	printf("this is %s  %s  %d\n", __FILE__, __FUNCTION__, __LINE__);
 }
 
 void TcpServer::setThreadNum(int threadNum)

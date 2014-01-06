@@ -14,17 +14,17 @@
 
 #include <InetAddress.h>
 #include <CallBacks.h>
-#include <EventLoopThreadPool.h>
-#include <Acceptor.h>
+//#include <EventLoopThreadPool.h>
+//#include <Acceptor.h>
 #include <TcpConnection.h>
 
 namespace netlib{
 namespace net{
 
 //FIXME 如果是前置声明则 测试程序会报错
-//class Acceptor;
+class Acceptor;
 class EventLoop;
-//class EventLoopThreadPool;
+class EventLoopThreadPool;
 
 class TcpServer{
 public:
@@ -32,6 +32,7 @@ public:
 
 public:
 	TcpServer(EventLoop *loop, const InetAddress& listenAddr, const std::string& serverName);
+	~TcpServer(); //这个析构函数对于 scoped_ptr 成员变量至关重要 ！！！！！！！！
 
 	void setThreadNum(int threadNum);
 

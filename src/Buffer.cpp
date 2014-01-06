@@ -29,6 +29,7 @@ ssize_t Buffer::readFd(int fd)
 
 	}
 
+	return n;
 }
 
 }}
