@@ -49,7 +49,11 @@ void TcpConnection::send(const char* msg)
 	{
 		if(loop_->isInLoopThread())
 		{
-			size_t len = sizeof(msg);
+			size_t len = strlen(msg);  // 此处用sizeof 会出错 原因为字符串长度不对
+			size_t sizeLen = sizeof(msg);  // 这里sizeof 求2的是指针长度
+
+			printf("%s %s msg = %s  len = %zu  sizeLen = %zu\n", __FILE__, __FUNCTION__, msg, len, sizeLen);
+
 			sendInLoop(msg, len);
 		}
 		else
@@ -67,6 +71,8 @@ void TcpConnection::sendInLoop(const char* message, size_t len)
 		return;
 	}
 
+//	char tmp[50] = "this is server test test test test test test test";
+	printf("%s   %s   message %s \n", __FILE__, __FUNCTION__, message);
 	socketAct::write(channelPtr_->fd(), message, len);
 
 }
@@ -114,6 +120,8 @@ void TcpConnection::writeHandle()
 void TcpConnection::closeHanle()
 {
 	printf("\n this is closeHandle  %s %s \n", __FILE__, __FUNCTION__);
+	setState(kDisconnected);
+	channelPtr_->disableAll();
 }
 
 void TcpConnection::errorHandle()

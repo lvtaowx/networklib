@@ -27,21 +27,28 @@ Channel::Channel(EventLoop *loop, int fd)
 
 }
 
-void Channel::handleEvent()
+void Channel::handleEvent() //如果是 poll来实现底层的话 则会返回 POLLNVAL 等事件
 {
-
-	if(revents_ & POLLIN)
-	{
-		if(readCallBack_) readCallBack_();
-	}
-	else if(revents_ & POLLOUT)
-	{
-		if(writeCallBack_) writeCallBack_();
-	}
-	else
+	if((revents_ & POLLHUP) && !(revents_ & POLLIN))
 	{
 		if(closeCallBack_) closeCallBack_();
 	}
+
+	if(revents_ & (POLLIN | POLLPRI | POLLRDHUP))
+	{
+		if(readCallBack_) readCallBack_();
+	}
+
+	if(revents_ & (POLLERR | POLLNVAL))
+	{
+		if(errorCallBack_) errorCallBack_();
+	}
+
+	if(revents_ & POLLOUT)
+	{
+		if(writeCallBack_) writeCallBack_();
+	}
+
 }
 
 void Channel::enableReading()

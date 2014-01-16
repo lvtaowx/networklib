@@ -53,6 +53,10 @@ public:
 	{
 		closeCallBack_ = cb;
 	}
+	void setErrorCallBack(const EventCallBack& cb)
+	{
+		errorCallBack_ = cb;
+	}
 
 	void enableReading();
 	void enableWriting();
@@ -78,6 +82,7 @@ private:
 	EventCallBack readCallBack_;
 	EventCallBack writeCallBack_;
 	EventCallBack closeCallBack_;
+	EventCallBack errorCallBack_;
 };
 
 }

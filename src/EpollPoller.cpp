@@ -99,7 +99,17 @@ void EpollPoller::updateChannel(Channel *channel)
 	}
 	else
 	{
-		//TODO
+		//TODO 如果这里不作为 将导致无法取消事件
+//		int fd = channel->fd();
+		if(channel->isNoneEvent())
+		{
+			updateOpt(EPOLL_DEL, channel);
+			channel->set_index(kDeleted);
+		}
+		else
+		{
+			updateOpt(EPOLL_MOD, channel);
+		}
 	}
 
 }
