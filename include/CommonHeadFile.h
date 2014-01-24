@@ -18,4 +18,6 @@
 #include <set>
 #include <map>
 
+using namespace std;
+
 #endif /* COMMONHEADFILE_H_ */

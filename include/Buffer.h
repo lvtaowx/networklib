@@ -103,6 +103,11 @@ public:
 		append(static_cast<const char*>(data), len);
 	}
 
+	void append(const string& data)
+	{
+		append(data.data(), data.size());
+	}
+
 	void retrieve(size_t len)
 	{
 		assert(len <= readableBytes());
